@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Print Cost Calculator</title>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+        }
+
+        .jumbotron {
+            background-color: #f28b1f;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #f28b1f;
+            border-color: #f28b1f;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus,
+        .btn-primary:active {
+            background-color: #f28b1f;
+            opacity: 0.7;
+        }
+
+        .tax-label {
+            font-style: italic;
+            color: red;
+            margin-bottom: 0;
+        }
+
+        .discount-label {
+            font-style: italic;
+            color: green;
+            margin-bottom: 0;
+        }
+
+        #displayTotalCost {
+            display: inline-block;
+        }
+
+        .italic-text {
+            font-style: italic;
+        }
+
+        .grey-text {
+            color: grey;
+        }
+
+        .width-10 {
+            max-width: 10%;
+            width: 10%;
+            min-width: 100px;
+        }
+
+        .input-group {
+            margin-bottom: .5rem;
+        }
+
+        .cap-Right {
+            border-radius: 0rem 1rem 1rem 0rem;
+        }
+
+        .input-group-text {
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 1rem 0rem 0rem 1rem;
+        }
+		
+		.custom-popover {
+            max-width: 100%;
+
+        }
+		
+        .custom-popover img {
+			max-width: 100%;
+			max-height: 50vh;
+        }
+		
+		a {
+		  color: white;
+		}
+		
+		.align-more-right {
+			margin-left: auto;
+			margin-right: 0px;
+		}
+		
+		footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            padding: 5px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Print Cost Calculator</h1>
+    </div>
+
+    <div class="container">
+        <form>
+            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+				<div class="input-group">       
+					<div class="input-group-text" id="btnGroupAddon" for="costPerSqFt">Cost per Square Foot</div>
+					<div class="input-group-prepend"><span class="input-group-text">$</span></div>
+				<input type="number" class="form-control cap-Right" id="costPerSqFt" placeholder="Enter cost" min="0" value="0">
+				
+
+				</div>				
+				<div class="btn-group mb-2 align-more-right" role="group" aria-label="Basic example">
+					<button type="button" class="btn btn-primary" data-toggle="popover"class="custom-popover" data-trigger="hover"data-html="true" data-placement="right" data-content="<img src='https://my.cia.edu/ICS/icsfs/mm/studentpricingweb.jpg?target=88a05a7e-6d7a-4563-b877-bdfe9164f609' alt='Thumbnail'>"
+					onclick="window.open('https://my.cia.edu/ICS/Departments/Digital_Output_Center/Student_Price_List.jnz', '_blank')"
+					>
+						Student Pricing
+					</button>
+					<button type="button" class="btn btn-primary" data-toggle="popover" class="custom-popover" data-trigger="hover" data-html="true" data-placement="right" data-content="<img src='https://my.cia.edu/ICS/icsfs/mm/externalpricing-01.jpg?target=eac386d8-84e0-4544-989a-d2ef6468f0b2' alt='Thumbnail'>"onclick="window.open('https://my.cia.edu/ICS/Departments/Digital_Output_Center/Student_Price_List.jnz', '_blank')">
+						Alumni Pricing
+					</button>
+					<button type="button" class="btn btn-primary" data-toggle="popover" class="custom-popover" data-trigger="hover" data-html="true" data-placement="right" data-content="<img src='https://my.cia.edu/ICS/icsfs/mm/externalpricing-01.jpg?target=eac386d8-84e0-4544-989a-d2ef6468f0b2' alt='Thumbnail'>"onclick="window.open('https://my.cia.edu/ICS/Departments/Digital_Output_Center/Student_Price_List.jnz', '_blank')">
+						External Pricing
+					</button>
+				</div>				
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-text width-10" id="btnGroupAddon" for="width">Width</div>
+                <input type="number" class="form-control" id="width" placeholder="Enter width" min="0" value="0">
+                <select class="form-control width-10 cap-Right" id="widthUnit">
+                    <option>in</option>
+                    <option>ft</option>
+                    <option>yd</option>
+                    <option>mm</option>
+                    <option>cm</option>
+                    <option>m</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-text width-10" id="btnGroupAddon" for="height">Height</div>
+                <input type="number" class="form-control" id="height" placeholder="Enter height" min="0" value="0">
+                <select class="form-control width-10 cap-Right" id="heightUnit">
+                    <option>in</option>
+                    <option>ft</option>
+                    <option>yd</option>
+                    <option>mm</option>
+                    <option>cm</option>
+                    <option>m</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-text width-10" id="btnGroupAddon" for="quantity">Quantity</div>
+                <input type="number" class="form-control cap-Right" id="quantity" placeholder="Enter quantity" min="0" step="1" value="1">
+            </div>
+            <p id="displayTotalSqFt" class="italic-text grey-text">Total Square Footage: 0.00 sq ft</p>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="taxCheckbox">
+                    <label class="form-check-label" for="taxCheckbox">
+                        Apply 8% Tax
+                    </label>
+                    <label id="taxLabel" class="tax-label"></label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="discountCheckbox">
+                    <label class="form-check-label" for="discountCheckbox">
+                        Apply 20% Discount
+                    </label>
+                    <label id="discountLabel" class="discount-label"></label>
+                </div>
+            </div>
+        </form>
+
+        <div class="mt-4">
+            <h2>Total Cost: <span id="displayTotalCost">$0.00</span></h2>
+        </div>
+    </div>
+	
+	<footer>
+		<a class="grey-text italic-text" href="https://www.gamedirection.net" target="_blank">Designed by Alexander Sierputowski Alumni 2018</a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('[data-toggle="popover"]').popover({
+                container: 'body',
+                placement: 'bottom',
+                html: true,
+				template: '<div class="popover custom-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div>'
+            });
+
+            function calculatePrintCost() {
+                var costPerSqFt = parseFloat(document.querySelector('#costPerSqFt').value);
+                var width = parseFloat(document.querySelector('#width').value);
+                var height = parseFloat(document.querySelector('#height').value);
+                var quantity = parseInt(document.querySelector('#quantity').value);
+                var widthUnit = document.querySelector('#widthUnit').value;
+                var heightUnit = document.querySelector('#heightUnit').value;
+
+                var conversionRates = {
+                    'in': 1 / 12,
+                    'ft': 1,
+                    'yd': 3,
+                    'mm': 0.003281,
+                    'cm': 0.03281,
+                    'm': 3.281
+                };
+                width *= conversionRates[widthUnit];
+                height *= conversionRates[heightUnit];
+
+                var totalSqFt = width * height * quantity;
+
+                // Calculate the total cost
+                var totalCost = costPerSqFt * totalSqFt;
+
+                // Apply 8% tax if the checkbox is checked
+                var taxCheckbox = document.querySelector('#taxCheckbox');
+                var taxLabel = document.querySelector('#taxLabel');
+                if (taxCheckbox.checked) {
+                    var taxAmount = totalCost * 0.08;
+                    totalCost *= 1.08; // Apply 8% tax
+                    taxLabel.textContent = '(' + taxAmount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) + ')';
+                } else {
+                    taxLabel.textContent = '';
+                }
+
+                // Apply 20% discount if the checkbox is checked
+                var discountCheckbox = document.querySelector('#discountCheckbox');
+                var discountLabel = document.querySelector('#discountLabel');
+                if (discountCheckbox.checked) {
+                    var discount = totalCost * 0.2;
+                    totalCost -= discount; // Subtract the discount from the total cost
+                    discountLabel.textContent = '(' + discount.toLocaleString('en-US', { style: 'currency', currency: 'USD' }) + ')';
+                } else {
+                    discountLabel.textContent = '';
+                }
+				
+				// Format costPerSqFt as $0.00
+
+
+                // Format totalCost as USD with currency formatting
+                var formattedTotalCost = totalCost.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+                document.querySelector('#displayTotalCost').textContent = formattedTotalCost;
+                document.querySelector('#displayTotalSqFt').textContent = 'Total Square Footage: ' + totalSqFt.toFixed(2) + ' sq ft';
+            }
+			
+			// Add event listeners to the dropdown elements
+			var dropdowns = document.querySelectorAll('select');
+			dropdowns.forEach(function (dropdown) {
+				dropdown.addEventListener('change', calculatePrintCost);
+			});
+
+
+            var inputs = document.querySelectorAll('input');
+            inputs.forEach(function (input) {
+                input.addEventListener('input', calculatePrintCost);
+            });
+
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', calculatePrintCost);
+            });
+
+            document.querySelector('form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                calculatePrintCost();
+            });
+
+            calculatePrintCost(); // Calculate and display the initial results
+        });
+
+    </script>
+</body>
+<!--Version 1.0.0 | © 2023 | Created by Alexander Sierputowski | Donated by GameDirection LLC | Contact: alex@gamedirection.net | This project is licensed under the MIT License.-->
+</html>
